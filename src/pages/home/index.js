@@ -1,0 +1,7 @@
+export { default as HomePage } from './HomePage'
+export { default as BeautySalonPage } from './BeautySalonPage'
+export { default as BeautySalonOpPage } from './BeautySalonOpPage'
+export { default as WellnessSpaPage } from './WellnessSpaPage'
+export { default as WellnessSpaOpPage } from './WellnessSpaOpPage'
+export { default as HairSalonPage } from './HairSalonPage'
+export { default as HairSalonOpPage } from './HairSalonOpPage'

@@ -1,0 +1,6 @@
+export { default as About } from './AboutPage'
+export { default as Contact } from './ContactPage'
+export { default as Appointment } from './AppointmentPage'
+export { default as Pricing } from './PricingPage'
+export { default as FAQ } from './FaqPage'
+export { default as Error } from './ErrorPage'
