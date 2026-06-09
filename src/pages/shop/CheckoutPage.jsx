@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useAuth } from '../../context/AuthContext'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -34,9 +35,26 @@ const CheckoutPage = () => {
     }
   })
 
+  const { addBooking } = useAuth()
   const onSubmit = (data) => {
     console.log('Order submitted:', data)
     console.log('Cart items:', items)
+    // Create a booking record
+    const bookingData = {
+      items,
+      total: total,
+      date: new Date().toISOString(),
+      status: 'Confirmed',
+      paymentMethod: data.paymentMethod,
+      shippingAddress: {
+        address: data.address,
+        city: data.city,
+        state: data.state,
+        zip: data.zip,
+        country: data.country,
+      },
+    }
+    addBooking(bookingData)
     setOrderSuccess(true)
     clearCart()
   }
@@ -101,6 +119,16 @@ const CheckoutPage = () => {
     )
   }
 
+  // After successful order, optionally redirect after a brief pause
+  useEffect(() => {
+    if (orderSuccess) {
+      const timer = setTimeout(() => {
+        navigate('/')
+      }, 4000) // 4 seconds
+      return () => clearTimeout(timer)
+    }
+  }, [orderSuccess, navigate])
+
   return (
     <PageWrapper title="Checkout">
       <Breadcrumb items={breadcrumbItems} />
@@ -111,11 +139,11 @@ const CheckoutPage = () => {
             <div className="row g-5">
               <div className="col-lg-8">
                 <div className="checkout-form">
-                  <h3 className="mb-4">Billing Details</h3>
+                  <h3 className="mb-4 text-white">Billing Details</h3>
                   
                   <div className="row g-3">
                     <div className="col-md-6">
-                      <label className="form-label">First Name *</label>
+                      <label className="form-label text-white">First Name *</label>
                       <input 
                         {...register('firstName')}
                         className={`form-control ${errors.firstName ? 'is-invalid' : ''}`}
@@ -128,7 +156,7 @@ const CheckoutPage = () => {
                       )}
                     </div>
                     <div className="col-md-6">
-                      <label className="form-label">Last Name *</label>
+                      <label className="form-label text-white">Last Name *</label>
                       <input 
                         {...register('lastName')}
                         className={`form-control ${errors.lastName ? 'is-invalid' : ''}`}
@@ -141,7 +169,7 @@ const CheckoutPage = () => {
                       )}
                     </div>
                     <div className="col-md-6">
-                      <label className="form-label">Email *</label>
+                      <label className="form-label text-white">Email *</label>
                       <input 
                         type="email"
                         {...register('email')}
@@ -155,7 +183,7 @@ const CheckoutPage = () => {
                       )}
                     </div>
                     <div className="col-md-6">
-                      <label className="form-label">Phone *</label>
+                      <label className="form-label text-white">Phone *</label>
                       <input 
                         type="tel"
                         {...register('phone')}
@@ -169,7 +197,7 @@ const CheckoutPage = () => {
                       )}
                     </div>
                     <div className="col-12">
-                      <label className="form-label">Address *</label>
+                      <label className="form-label text-white">Address *</label>
                       <input 
                         {...register('address')}
                         className={`form-control ${errors.address ? 'is-invalid' : ''}`}
@@ -182,7 +210,7 @@ const CheckoutPage = () => {
                       )}
                     </div>
                     <div className="col-md-6">
-                      <label className="form-label">City *</label>
+                      <label className="form-label text-white">City *</label>
                       <input 
                         {...register('city')}
                         className={`form-control ${errors.city ? 'is-invalid' : ''}`}
@@ -195,7 +223,7 @@ const CheckoutPage = () => {
                       )}
                     </div>
                     <div className="col-md-3">
-                      <label className="form-label">State *</label>
+                      <label className="form-label text-white">State *</label>
                       <input 
                         {...register('state')}
                         className={`form-control ${errors.state ? 'is-invalid' : ''}`}
@@ -208,7 +236,7 @@ const CheckoutPage = () => {
                       )}
                     </div>
                     <div className="col-md-3">
-                      <label className="form-label">ZIP Code *</label>
+                      <label className="form-label text-white">ZIP Code *</label>
                       <input 
                         {...register('zip')}
                         className={`form-control ${errors.zip ? 'is-invalid' : ''}`}
@@ -216,12 +244,12 @@ const CheckoutPage = () => {
                       />
                       {errors.zip && (
                         <span style={{ color: '#dc3545', fontSize: '14px' }}>
-                          {errors.zodError.message}
+                          {errors.zip.message}
                         </span>
                       )}
                     </div>
                     <div className="col-12">
-                      <label className="form-label">Country *</label>
+                      <label className="form-label text-white">Country *</label>
                       <select 
                         {...register('country')}
                         className={`form-control ${errors.country ? 'is-invalid' : ''}`}
@@ -243,7 +271,7 @@ const CheckoutPage = () => {
                     </div>
                   </div>
 
-                  <h4 className="mt-5 mb-3">Payment Method</h4>
+                  {/* <h4 className="mt-5 mb-3">Payment Method</h4>
                   <div className="payment-methods">
                     <div className="form-check mb-2">
                       <input 
@@ -281,7 +309,7 @@ const CheckoutPage = () => {
                         Cash on Delivery
                       </label>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
 
@@ -323,7 +351,7 @@ const CheckoutPage = () => {
                   </div>
 
                   <button type="submit" className="th-btn style1 w-100 mt-4">
-                    Place Order
+                    Book Now
                   </button>
                 </div>
               </div>

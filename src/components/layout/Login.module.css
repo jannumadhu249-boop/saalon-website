@@ -1,0 +1,521 @@
+/* Theme variables */
+:root {
+  --primary-orange: #FF752B;
+  --primary-charcoal: #121214;
+  --bg-light: #f9fafb;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.authCard {
+  width: 100%;
+  min-height: 100vh;
+  background: #ffffff;
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
+}
+
+.splitContainer {
+  display: flex;
+  flex-wrap: wrap;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* LEFT SIDE */
+.imageSide {
+  flex: 1.1;
+  background: linear-gradient(145deg, var(--primary-orange) 0%, var(--primary-charcoal) 100%);
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.bgImg {
+  position: absolute;
+  inset: 0;
+  background-image: url('../../assets/img/saalon-bg-img.jpg');
+  background-size: cover;
+  background-position: center 30%;
+  opacity: 0.75;
+  transition: transform 0.4s ease;
+}
+
+.imageSide:hover .bgImg {
+  transform: scale(1.02);
+}
+
+.overlayContent {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2.5rem;
+  background: linear-gradient(135deg, var(--primary-charcoal) 0%, rgba(0, 0, 0, 0.45) 100%);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+}
+
+.brand img {
+  max-height: 120px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+}
+
+.heroText h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: white;
+  line-height: 1.2;
+  margin-bottom: 0.8rem;
+}
+
+.heroText p {
+  color: rgba(255,255,255,0.85);
+  font-size: 1rem;
+}
+
+.featureList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  margin-top: 1.5rem;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.feature i {
+  width: 2rem;
+  font-size: 28px;
+}
+
+/* RIGHT SIDE FORM */
+.formSide {
+  flex: 1;
+  background: #ffffff;
+  padding: 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.formHeader {
+  margin-bottom: 1.8rem;
+}
+
+.formHeader h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  background: linear-gradient(125deg, var(--primary-charcoal), #2B3A67);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.formHeader p {
+  color: #5b6e8c;
+  margin-top: 0.4rem;
+  font-size: 0.95rem;
+}
+
+.inputGroup {
+  margin-bottom: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.inputGroup label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--primary-charcoal);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.inputGroup input {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  font-size: 0.95rem;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 1rem;
+  background: #fefefe;
+  transition: all 0.2s;
+  font-family: inherit;
+  outline: none;
+}
+
+.inputGroup input:focus {
+  border-color: var(--primary-orange);
+  box-shadow: 0 0 0 3px rgba(255,114,43,0.1);
+}
+
+.rowFlex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0.5rem 0 1.5rem 0;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: #2d3e5f;
+  font-weight: 500;
+}
+
+.checkboxLabel input {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--primary-orange);
+}
+
+.forgotLink {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--primary-orange);
+  text-decoration: none;
+}
+
+.forgotLink:hover {
+  text-decoration: underline;
+}
+
+.authBtn {
+  width: 100%;
+  background: var(--primary-orange);
+  border: none;
+  padding: 0.9rem;
+  font-weight: 700;
+  font-size: 1rem;
+  color: white;
+  border-radius: 2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  transition: all 0.25s ease;
+}
+
+.authBtn:hover {
+  background: #e66a1a;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.1);
+}
+
+.toggleNote {
+  text-align: center;
+  margin-top: 1.8rem;
+  font-size: 0.9rem;
+  color: #5b6e8c;
+}
+
+.toggleNote a {
+  color: var(--primary-orange);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.toggleNote a:hover {
+  text-decoration: underline;
+}
+
+.toastMsg {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--primary-charcoal);
+  color: white;
+  padding: 0.7rem 1.5rem;
+  border-radius: 2rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  z-index: 1000;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.errorToast {
+  background: #b91c1c;
+}
+
+@media screen and (max-width: 880px) {
+  .splitContainer { flex-direction: column; }
+  .imageSide { min-height: 280px; flex: auto; }
+  .featureList { display: none; }
+  .formSide { padding: 2rem 1.5rem; }
+  .formHeader h1 { font-size: 1.8rem; }
+}
+
+@media screen and (max-width: 480px) {
+  .formSide { padding: 1.6rem; }
+  .inputGroup input { padding: 0.75rem 0.9rem; }
+  .authBtn { padding: 0.75rem; }
+  .toastMsg { white-space: normal; text-align: center; width: 90%; }
+}
+
+
+
+.brand {
+  display: flex;
+  align-items: center;
+}
+
+.brand img {
+  max-height: 90px;
+  width: auto;
+  object-fit: contain;
+}
+
+.heroText h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: white;
+  line-height: 1.2;
+  margin-bottom: 0.8rem;
+}
+
+.heroText p {
+  color: rgba(255,255,255,0.85);
+  font-size: 1rem;
+}
+
+.featureList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  margin-top: 1.5rem;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.feature i {
+  width: 2rem;
+  font-size: 24px;
+}
+
+/* RIGHT SIDE FORM */
+.formSide {
+  flex: 1;
+  background: #ffffff;
+  padding: 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.formHeader {
+  margin-bottom: 1.8rem;
+}
+
+.formHeader h1 {
+  font-size: 1.9rem;
+  font-weight: 700;
+  background: linear-gradient(125deg, #1F2B48, #2B3A67);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.formHeader p {
+  color: #5b6e8c;
+  margin-top: 0.4rem;
+  font-size: 0.9rem;
+}
+
+.inputGroup {
+  margin-bottom: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.inputGroup label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #1e2a3e;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.inputGroup input {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  font-size: 0.95rem;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 1rem;
+  background: #fefefe;
+  transition: all 0.2s;
+  font-family: inherit;
+  outline: none;
+}
+
+.inputGroup input:focus {
+  border-color: #3b4e7e;
+  box-shadow: 0 0 0 3px rgba(59, 78, 126, 0.1);
+}
+
+.rowFlex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0.5rem 0 1.5rem 0;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: #2d3e5f;
+  font-weight: 500;
+}
+
+.checkboxLabel input {
+  width: 1rem;
+  height: 1rem;
+  accent-color: #2b3a67;
+}
+
+.forgotLink {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #2b3a67;
+  text-decoration: none;
+}
+
+.forgotLink:hover {
+  text-decoration: underline;
+}
+
+.authBtn {
+  width: 100%;
+  background: #1f2b48;
+  border: none;
+  padding: 0.9rem;
+  font-weight: 700;
+  font-size: 1rem;
+  color: white;
+  border-radius: 2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  transition: all 0.25s ease;
+}
+
+.authBtn:hover {
+  background: #111827;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.1);
+}
+
+.toggleNote {
+  text-align: center;
+  margin-top: 1.8rem;
+  font-size: 0.9rem;
+  color: #5b6e8c;
+}
+
+.toggleNote a {
+  color: #2b3a67;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.toggleNote a:hover {
+  text-decoration: underline;
+}
+
+.toastMsg {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1f2b48;
+  color: white;
+  padding: 0.7rem 1.5rem;
+  border-radius: 2rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  z-index: 1000;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.errorToast {
+  background: #b91c1c;
+}
+
+@media screen and (max-width: 880px) {
+  .splitContainer {
+    flex-direction: column;
+  }
+  .imageSide {
+    min-height: 280px;
+    flex: auto;
+  }
+  .featureList {
+    display: none;
+  }
+  .formSide {
+    padding: 2rem 1.5rem;
+  }
+  .formHeader h1 {
+    font-size: 1.6rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .formSide {
+    padding: 1.6rem;
+  }
+  .inputGroup input {
+    padding: 0.75rem 0.9rem;
+  }
+  .authBtn {
+    padding: 0.75rem;
+  }
+  .toastMsg {
+    white-space: normal;
+    text-align: center;
+    width: 90%;
+  }
+}

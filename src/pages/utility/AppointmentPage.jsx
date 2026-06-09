@@ -45,7 +45,7 @@ const AppointmentPage = () => {
     <PageWrapper title="Book Appointment">
       <Breadcrumb items={breadcrumbItems} />
       
-      <section className="breadcumb-wrapper" style={{
+      {/* <section className="breadcumb-wrapper" style={{
         padding: '60px 0',
         background: '#f9f9f9'
       }}>
@@ -55,7 +55,7 @@ const AppointmentPage = () => {
             <p>Schedule your visit to Scuts and experience our premium services.</p>
           </div>
         </div>
-      </section>
+      </section> */}
 
       <section className="space overflow-hidden">
         <div className="container">

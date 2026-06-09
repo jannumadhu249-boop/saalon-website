@@ -2,6 +2,8 @@ import { lazy, Suspense, useEffect } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Loader from './components/ui/Loader'
 import PricingSection from './components/sections/PricingSection'
+import Login from './components/layout/Login'
+import Register from './components/layout/Registration'
 
 const HomePage = lazy(() => import('./pages/home/HomePage'))
 const BeautySalonPage = lazy(() => import('./pages/home/BeautySalonPage'))
@@ -35,6 +37,9 @@ const AppointmentPage = lazy(() => import('./pages/utility/AppointmentPage'))
 const PricingPage = lazy(() => import('./pages/utility/PricingPage'))
 const FaqPage = lazy(() => import('./pages/utility/FaqPage'))
 const ErrorPage = lazy(() => import('./pages/utility/ErrorPage'))
+const MyProfilePage = lazy(() => import('./pages/utility/MyProfilePage'))
+const ChangePasswordPage = lazy(() => import('./pages/utility/ChangePasswordPage'))
+const MyBookingsPage = lazy(() => import('./pages/utility/MyBookingsPage'))
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -51,6 +56,9 @@ function App() {
       <Suspense fallback={<Loader fullPage />}>
         <Routes>
           <Route path="/" element={<HomePage />} />
+
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           
           <Route path="/home-beauty-salon" element={<BeautySalonPage />} />
           <Route path="/home-beauty-salon-op" element={<BeautySalonOpPage />} />
@@ -84,6 +92,9 @@ function App() {
           <Route path="/pricing" element={<PricingPage />} />
           <Route path="/faq" element={<FaqPage />} />
           
+          <Route path="/my-profile" element={<MyProfilePage />} />
+          <Route path="/change-password" element={<ChangePasswordPage />} />
+          <Route path="/my-bookings" element={<MyBookingsPage />} />
           
           <Route path="*" element={<ErrorPage />} />
         </Routes>

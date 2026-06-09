@@ -1,0 +1,85 @@
+/* src/pages/MyProfilePage.module.css */
+.container {
+  max-width: 600px;
+  margin: 100px auto;
+  padding: 30px 30px 40px;
+  background: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #1e2a3e;
+  margin-bottom: 1.8rem;
+  letter-spacing: -0.3px;
+}
+
+.avatarContainer {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 1.5rem;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.avatarImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.uploadBtn {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: #FF752B;
+  color: #fff;
+  padding: 4px 8px;
+  font-size: 0.7rem;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.uploadBtn:hover {
+  background: #e66a24;
+}
+
+/* Each info block: label above value */
+.infoGroup {
+  text-align: left;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.infoGroup label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #888;
+  margin-bottom: 0.3rem;
+}
+
+.infoValue {
+  font-size: 1rem;
+  color: #1e2a3e;
+  font-weight: 500;
+  margin: 0;
+  word-break: break-word;
+}
+
+/* Remove border from last group */
+.infoGroup:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
