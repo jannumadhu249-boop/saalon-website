@@ -1,16 +1,62 @@
-import { useParams, Link, Navigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { useParams, Link } from 'react-router-dom'
 import { useInView } from 'react-intersection-observer'
 import { motion } from 'framer-motion'
 import PageWrapper from '../../components/layout/PageWrapper'
 import Breadcrumb from '../../components/layout/Breadcrumb'
 import ServiceCard from '../../components/ui/ServiceCard'
-import Button from '../../components/ui/Button'
-import { services } from '../../data/services'
+import { services as fallbackServices, fetchServices } from '../../data/services'
 
 const ServiceDetailsPage = () => {
   const { slug } = useParams()
-  const service = services.find(s => s.slug === slug)
+  const [servicesList, setServicesList] = useState(fallbackServices)
+  const [isLoading, setIsLoading] = useState(true)
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 })
+
+  useEffect(() => {
+    let active = true;
+    const loadServices = async () => {
+      try {
+        setIsLoading(true);
+        const loadedServices = await fetchServices();
+        if (active && loadedServices.length > 0) {
+          setServicesList(loadedServices);
+        }
+      } catch (err) {
+        console.error('Failed to load services for details page:', err);
+      } finally {
+        if (active) {
+          setIsLoading(false);
+        }
+      }
+    };
+    loadServices();
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const service = servicesList.find(s => s.slug === slug)
+
+  const breadcrumbItems = [
+    { label: 'Home', path: '/' },
+    { label: 'Services', path: '/services' },
+    { label: service ? (service.title || service.name) : '', path: `/services/${slug}` }
+  ]
+
+  if (isLoading) {
+    return (
+      <PageWrapper title="Loading Service Details">
+        <Breadcrumb items={breadcrumbItems} />
+        <div className="container py-5 text-center">
+          <div className="spinner-border text-primary" role="status" style={{ width: '3rem', height: '3rem', color: '#FF752B' }}>
+            <span className="visually-hidden">Loading...</span>
+          </div>
+          <p className="mt-3" style={{ color: '#5b6e8c', fontWeight: 500 }}>Loading service details...</p>
+        </div>
+      </PageWrapper>
+    )
+  }
 
   if (!service) {
     return (
@@ -26,22 +72,16 @@ const ServiceDetailsPage = () => {
     )
   }
 
-  const relatedServices = services
+  const relatedServices = servicesList
     .filter(s => s.category === service.category && s.id !== service.id)
     .slice(0, 3)
 
-  const breadcrumbItems = [
-    { label: 'Home', path: '/' },
-    { label: 'Services', path: '/services' },
-    { label: service.title, path: `/services/${slug}` }
-  ]
-
   return (
-    <PageWrapper title={service.title}>
+    <PageWrapper title={service.title || service.name}>
       <Breadcrumb items={breadcrumbItems} />
       
       <section className="space overflow-hidden">
-        <div className="container">
+        <div className="container" ref={ref}>
           <div className="row g-5">
             <div className="col-lg-8">
               <motion.div
@@ -51,9 +91,9 @@ const ServiceDetailsPage = () => {
               >
                 <div className="service-detail-image mb-4">
                   <img 
-                    src={service.image} 
-                    alt={service.title}
-                    style={{ width: '100%', borderRadius: '16px' }}
+                    src={service.image || '/assets/img/service-default.jpg'} 
+                    alt={service.title || service.name}
+                    style={{ width: '100%', maxHeight: '450px', objectFit: 'cover', borderRadius: '16px' }}
                   />
                 </div>
                 
@@ -62,13 +102,13 @@ const ServiceDetailsPage = () => {
                     {service.category}
                   </span>
                   <h1 className="mt-2 mb-4" style={{ fontFamily: 'var(--font-heading)' }}>
-                    {service.title}
+                    {service.title || service.name}
                   </h1>
                   <p style={{ fontSize: '18px', lineHeight: '1.8', color: 'var(--color-body)' }}>
-                    {service.description}
+                    {service.description || 'Experience complete relaxation with our signature treatment that rejuvenates your entire body.'}
                   </p>
                   <p style={{ color: 'var(--color-body)' }}>
-                    {service.shortDesc}
+                    {service.shortDesc || 'Premium beauty and wellness treatment.'}
                   </p>
 
                   <div className="service-meta mt-5" style={{

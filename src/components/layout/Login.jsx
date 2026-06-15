@@ -104,7 +104,7 @@ const Login = () => {
                   onChange={(e) => setRememberMe(e.target.checked)}
                 /> Remember me
               </label>
-              <a href="#" className={styles.forgotLink} onClick={handleForgot}>Forgot password?</a>
+              <a href="/forgot-password" className="">Forgot password?</a>
             </div>
 
             <button type="submit" className={styles.authBtn}>

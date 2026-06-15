@@ -4,6 +4,8 @@ import Loader from './components/ui/Loader'
 import PricingSection from './components/sections/PricingSection'
 import Login from './components/layout/Login'
 import Register from './components/layout/Registration'
+import ForgotPassword from './components/layout/Forgotpassword'
+import Dashboard from './pages/dashboard/Dashboard'
 
 const HomePage = lazy(() => import('./pages/home/HomePage'))
 const BeautySalonPage = lazy(() => import('./pages/home/BeautySalonPage'))
@@ -59,6 +61,7 @@ function App() {
 
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
           
           <Route path="/home-beauty-salon" element={<BeautySalonPage />} />
           <Route path="/home-beauty-salon-op" element={<BeautySalonOpPage />} />
@@ -95,6 +98,8 @@ function App() {
           <Route path="/my-profile" element={<MyProfilePage />} />
           <Route path="/change-password" element={<ChangePasswordPage />} />
           <Route path="/my-bookings" element={<MyBookingsPage />} />
+
+          <Route path="/dashboard" element={<Dashboard />} /> 
           
           <Route path="*" element={<ErrorPage />} />
         </Routes>

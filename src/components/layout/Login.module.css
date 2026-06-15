@@ -59,7 +59,7 @@
   flex-direction: column;
   justify-content: space-between;
   padding: 2.5rem;
-  background: linear-gradient(135deg, var(--primary-charcoal) 0%, rgba(0, 0, 0, 0.45) 100%);
+  background: linear-gradient var(--primary-charcoal);
 }
 
 .brand {
@@ -125,7 +125,7 @@
 .formHeader h1 {
   font-size: 2.2rem;
   font-weight: 700;
-  background: linear-gradient(125deg, var(--primary-charcoal), #2B3A67);
+  background: var(--primary-charcoal);
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
@@ -183,7 +183,7 @@
   gap: 0.5rem;
   cursor: pointer;
   font-size: 0.85rem;
-  color: #2d3e5f;
+  color: var(--primary-charcoal);
   font-weight: 500;
 }
 
@@ -224,7 +224,7 @@
 .authBtn:hover {
   background: #e66a1a;
   transform: translateY(-2px);
-  box-shadow: 0 8px 18px rgba(0,0,0,0.1);
+  box-shadow: 0 8px 18px var(--primary-orange);
 }
 
 .toggleNote {
@@ -344,7 +344,7 @@
 .formHeader h1 {
   font-size: 1.9rem;
   font-weight: 700;
-  background: linear-gradient(125deg, #1F2B48, #2B3A67);
+  background: var(--primary-charcoal);
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
@@ -385,7 +385,7 @@
 }
 
 .inputGroup input:focus {
-  border-color: #3b4e7e;
+  border-color: var(--primary-orange);
   box-shadow: 0 0 0 3px rgba(59, 78, 126, 0.1);
 }
 
@@ -409,13 +409,13 @@
 .checkboxLabel input {
   width: 1rem;
   height: 1rem;
-  accent-color: #2b3a67;
+  accent-color: var(--primary-orange);
 }
 
 .forgotLink {
   font-size: 0.85rem;
   font-weight: 600;
-  color: #2b3a67;
+  color: var(--primary-charcoal);
   text-decoration: none;
 }
 
@@ -425,7 +425,7 @@
 
 .authBtn {
   width: 100%;
-  background: #1f2b48;
+  background: var(--primary-charcoal);
   border: none;
   padding: 0.9rem;
   font-weight: 700;
@@ -441,7 +441,7 @@
 }
 
 .authBtn:hover {
-  background: #111827;
+  background: var(--primary-orange);
   transform: translateY(-2px);
   box-shadow: 0 8px 18px rgba(0,0,0,0.1);
 }
@@ -468,7 +468,7 @@
   bottom: 2rem;
   left: 50%;
   transform: translateX(-50%);
-  background: #1f2b48;
+  background: var(--primary-charcoal);
   color: white;
   padding: 0.7rem 1.5rem;
   border-radius: 2rem;
@@ -518,4 +518,24 @@
     text-align: center;
     width: 90%;
   }
+}
+
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.checkboxLabel input[type="checkbox"] {
+  width: 1rem;
+  height: 1rem;
+  margin: 0;
+  accent-color: var(--primary-orange, #FF752B);
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: inline-block !important;
+  position: relative !important;
+  pointer-events: auto !important;
 }

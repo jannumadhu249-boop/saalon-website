@@ -155,4 +155,86 @@ export const services = [
 
 export const categories = ['All', 'Hair', 'Skin', 'Makeup', 'Hand & Feet', 'Grooming', 'Massage', 'Spa'];
 
+export const API_BASE_URL = 'http://187.127.143.141:5000';
+
+const getFallbackIcon = (categoryName, serviceName) => {
+  const name = (serviceName || '').toLowerCase();
+  const cat = (categoryName || '').toLowerCase();
+  if (name.includes('cut') || name.includes('hair') || name.includes('trim')) return '💇';
+  if (name.includes('nail') || name.includes('manicure') || name.includes('pedicure')) return '💅';
+  if (name.includes('massage') || name.includes('spa')) return '💆';
+  if (name.includes('facial') || name.includes('clean') || name.includes('peel')) return '🧼';
+  if (name.includes('shave') || name.includes('beard')) return '🧔';
+  if (cat.includes('hair')) return '💇';
+  if (cat.includes('skin')) return '🧼';
+  if (cat.includes('massage')) return '💆';
+  if (cat.includes('spa') || cat.includes('wellness')) return '🧘';
+  return '💇';
+};
+
+export const fetchCategories = async () => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/v1/ScutsApi/admin/category/getAll`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    if (!response.ok) throw new Error('Failed to fetch categories');
+    const result = await response.json();
+    if (result.success && result.data) {
+      return result.data
+        .filter(cat => cat.status === 'active')
+        .sort((a, b) => (a.priority || 0) - (b.priority || 0));
+    }
+    return [];
+  } catch (error) {
+    console.error('Error fetching categories from API:', error);
+    return [];
+  }
+};
+
+export const fetchServices = async () => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/v1/ScutsApi/admin/services/getAll`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    if (!response.ok) throw new Error('Failed to fetch services');
+    const result = await response.json();
+    if (result.success && result.data) {
+      return result.data
+        .filter(s => s.status === 'active')
+        .map(s => {
+          const serviceName = s.serviceName || '';
+          return {
+            id: s._id,
+            name: serviceName,
+            title: serviceName,
+            price: Number(s.price) || 0,
+            duration: s.duration || '30 mins',
+            image: s.image ? `${API_BASE_URL}/${s.image}` : '',
+            gender: (s.type || 'unisex').toLowerCase(),
+            categoryId: s.categoryId,
+            categoryName: s.categoryName || '',
+            category: s.categoryName || '',
+            status: s.status,
+            slug: serviceName
+              .toLowerCase()
+              .replace(/[^a-z0-9]+/g, '-')
+              .replace(/(^-|-$)/g, ''),
+            icon: getFallbackIcon(s.categoryName, serviceName)
+          };
+        });
+    }
+    return [];
+  } catch (error) {
+    console.error('Error fetching services from API:', error);
+    return [];
+  }
+};
+
+
 

@@ -365,7 +365,8 @@ const Navbar = () => {
   const [isSticky, setIsSticky] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false)
-  const [openSubmenu, setOpenSubmenu] = useState(null)   // ← THIS WAS MISSING
+  const [openSubmenu, setOpenSubmenu] = useState(null)
+  const [activeServiceTab, setActiveServiceTab] = useState('men')
   const location = useLocation()
   const rippleRef = useRef(null)
   const dropdownRef = useRef(null)
@@ -394,7 +395,7 @@ const Navbar = () => {
     setOpenSubmenu(null)
   }, [location])
 
-  // jQuery Ripples effect for mega menu
+  // jQuery Ripples effect for Services mega menu
   useEffect(() => {
     const initRipples = () => {
       if (rippleRef.current) {
@@ -436,26 +437,90 @@ const Navbar = () => {
               {navigation.map((item, index) => (
                 <li key={index} className={item.children ? 'mega-menu-wrap' : ''}>
                   <Link to={item.path} className="menu-link">{item.label}</Link>
+                  
                   {item.children && (
-                    <div ref={item.label === 'Services' ? rippleRef : null} className="mega-menu">
+                    <div 
+                      ref={item.label === 'Services' ? rippleRef : null} 
+                      className="mega-menu"
+                    >
                       <div className="container" style={{ position: 'relative', zIndex: 5 }}>
-                        <div className="row g-4">
-                          {item.children.map((child, childIdx) => (
-                            <div key={childIdx} className="col-lg">
-                              <div className="mega-menu-box">
-                                <h4 className="mega-menu-title">{child.label}</h4>
-                                <ul className="sub-menu">
-                                  {child.items
-                                    ? child.items.map((subItem, subIdx) => (
-                                        <li key={subIdx}><Link to={subItem.path}>{subItem.label}</Link></li>
-                                      ))
-                                    : <li><Link to={child.path}>{child.label}</Link></li>
-                                  }
-                                </ul>
+                        
+                        {/* Service Tabs (only for Services) */}
+                        {/* {item.label === 'Services' && (
+                          <div className="service-tabs-wrapper">
+                            <button
+                              className={`service-tab-btn ${activeServiceTab === 'men' ? 'active' : ''}`}
+                              onClick={() => setActiveServiceTab('men')}
+                            >
+                              Men
+                            </button>
+                            <button
+                              className={`service-tab-btn ${activeServiceTab === 'women' ? 'active' : ''}`}
+                              onClick={() => setActiveServiceTab('women')}
+                            >
+                              Women
+                            </button>
+                          </div>
+                        )} */}
+
+                        {/* Mega menu content */}
+                        {item.label === 'Services' ? (
+                          <>
+                            {activeServiceTab === 'men' && (
+                              <div className="row g-4 mt-2 service-fade">
+                                {item.children.map((child, childIdx) => (
+                                  <div key={childIdx} className="col-lg">
+                                    <div className="mega-menu-box">
+                                      <h4 className="mega-menu-title">{child.label}</h4>
+                                      <ul className="sub-menu">
+                                        {child.items?.map((subItem, subIdx) => (
+                                          <li key={subIdx}>
+                                            <Link to={subItem.path}>{subItem.label}</Link>
+                                          </li>
+                                        ))}
+                                      </ul>
+                                    </div>
+                                  </div>
+                                ))}
                               </div>
-                            </div>
-                          ))}
-                        </div>
+                            )}
+                            {activeServiceTab === 'women' && (
+                              <div className="row g-4 mt-2 service-fade">
+                                {item.children.map((child, childIdx) => (
+                                  <div key={childIdx} className="col-lg">
+                                    <div className="mega-menu-box">
+                                      <h4 className="mega-menu-title">{child.label}</h4>
+                                      <ul className="sub-menu">
+                                        {child.items?.map((subItem, subIdx) => (
+                                          <li key={subIdx}>
+                                            <Link to={subItem.path}>{subItem.label}</Link>
+                                          </li>
+                                        ))}
+                                      </ul>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </>
+                        ) : (
+                          <div className="row g-4">
+                            {item.children.map((child, childIdx) => (
+                              <div key={childIdx} className="col-lg">
+                                <div className="mega-menu-box">
+                                  <h4 className="mega-menu-title">{child.label}</h4>
+                                  <ul className="sub-menu">
+                                    {child.items?.map((subItem, subIdx) => (
+                                      <li key={subIdx}>
+                                        <Link to={subItem.path}>{subItem.label}</Link>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        )}
                       </div>
                     </div>
                   )}
@@ -464,12 +529,12 @@ const Navbar = () => {
             </ul>
           </nav>
 
-          {/* Header Buttons */}
+          {/* Header Buttons (Auth, Cart, Appointment) */}
           <div className="header-button">
             {/* Cart Icon with badge */}
             <Link to="/cart" className="th-btn style1 icon-only cart-icon">
               <i className="fas fa-shopping-cart"></i>
-              {/* {cartCount > 0 && <span className="cart-badge">{cartCount}</span>} */}
+              {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
             </Link>
 
             {user ? (
@@ -505,14 +570,21 @@ const Navbar = () => {
             )}
 
             <Link to="/appointment" className="th-btn style1">BOOK APPOINTMENT</Link>
-            <button className="icon-btn sideMenuToggler d-xl-none" onClick={() => setMobileMenuOpen(true)}>
-              <i className="fas fa-bars"></i>
+
+            {/* Animated mobile menu button (three lines) */}
+            <button 
+              className={`mobile-menu-btn d-xl-none ${mobileMenuOpen ? 'active' : ''}`}
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              <span></span>
+              <span></span>
+              <span></span>
             </button>
           </div>
         </div>
       </div>
 
-      {/* Mobile Menu – with collapsible submenus */}
+      {/* Mobile Menu – collapsible submenus (only one) */}
       <div className={`th-menu-wrapper ${mobileMenuOpen ? 'th-body-visible' : ''}`}>
         <div className="th-menu-area text-center">
           <button className="th-menu-toggle" onClick={() => setMobileMenuOpen(false)}>

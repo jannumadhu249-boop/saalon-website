@@ -27,52 +27,104 @@ export const navigation = [
   {
     label: "Services",
     path: "/services",
+    // children: [
+    //   {
+    //     label: "Hair",
+    //     path: "/services",
+    //     items: [
+    //       { label: "Hair Style", path: "/services" },
+    //       { label: "Hair Care", path: "/services" },
+    //       { label: "Hair Colour", path: "/services" },
+    //       { label: "Highlights & Streaks", path: "/services" }
+    //     ]
+    //   },
+    //   {
+    //     label: "Skin",
+    //     path: "/services",
+    //     items: [
+    //       { label: "Facial Care", path: "/services" },
+    //       { label: "Bleach", path: "/services" },
+    //       { label: "Waxing", path: "/services" }
+    //     ]
+    //   },
+    //   {
+    //     label: "Makeup",
+    //     path: "/services",
+    //     items: [
+    //       { label: "Bridal Makeup", path: "/services" },
+    //       { label: "Event Makeup", path: "/services" },
+    //       { label: "Party Makeup", path: "/services" }
+    //     ]
+    //   },
+    //   {
+    //     label: "Hands & Feet",
+    //     path: "/services",
+    //     items: [
+    //       { label: "Manicure", path: "/services" },
+    //       { label: "Pedicure", path: "/services" }
+    //     ]
+    //   },
+    //   {
+    //     label: "Packages",
+    //     path: "/services",
+    //     items: [
+    //       { label: "Bridal Packages", path: "/services" },
+    //       { label: "Groom Packages", path: "/services" },
+    //       { label: "Monthly Packages", path: "/services" },
+    //     ]
+    //   }
+    // ]
     children: [
       {
         label: "Hair",
         path: "/services",
         items: [
-          { label: "Hair Style", path: "/services" },
-          { label: "Hair Care", path: "/services" },
-          { label: "Hair Colour", path: "/services" },
-          { label: "Highlights & Streaks", path: "/services" }
+          { label: "Hair Spa & Scalp Care", path: "/hair-spa-scalp-care" },
+          { label: "Professional Hair Care Range", path: "/services" },
         ]
       },
       {
         label: "Skin",
         path: "/services",
         items: [
-          { label: "Facial Care", path: "/services" },
-          { label: "Bleach", path: "/services" },
-          { label: "Waxing", path: "/services" }
+          { label: "Skin & Facial Treatments", path: "/services" },
+          { label: "Waxing & Skin Grooming", path: "/services" },
+          { label: "Premium Waxing Range", path: "/services" }
         ]
       },
-      {
-        label: "Makeup",
-        path: "/services",
-        items: [
-          { label: "Bridal Makeup", path: "/services" },
-          { label: "Event Makeup", path: "/services" },
-          { label: "Party Makeup", path: "/services" }
-        ]
-      },
+      // {
+      //   label: "Makeup",
+      //   path: "/services",
+      //   items: [
+      //     { label: "Bridal Makeup", path: "/services" },
+      //     { label: "Event Makeup", path: "/services" },
+      //     { label: "Party Makeup", path: "/services" }
+      //   ]
+      // },
       {
         label: "Hands & Feet",
         path: "/services",
         items: [
-          { label: "Manicure", path: "/services" },
-          { label: "Pedicure", path: "/services" }
+          { label: "Nail Care & Grooming", path: "/services" },
+          { label: "Nail Care Essentials", path: "/services" }
         ]
       },
       {
-        label: "Packages",
+        label: "Products We Use",
         path: "/services",
         items: [
-          { label: "Bridal Packages", path: "/services" },
-          { label: "Groom Packages", path: "/services" },
-          { label: "Monthly Packages", path: "/services" },
+          { label: "Korean Facial & Skin Care Range", path: "/services" },
         ]
-      }
+      },
+      // {
+      //   label: "Packages",
+      //   path: "/services",
+      //   items: [
+      //     { label: "Bridal Packages", path: "/services" },
+      //     { label: "Groom Packages", path: "/services" },
+      //     { label: "Monthly Packages", path: "/services" },
+      //   ]
+      // }
     ]
   },
   // {

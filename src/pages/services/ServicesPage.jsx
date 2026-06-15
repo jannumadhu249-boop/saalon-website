@@ -93,42 +93,83 @@
 
 
 
-// src/pages/services/ServicesPage.jsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { motion } from 'framer-motion';
 import PageWrapper from '../../components/layout/PageWrapper';
 import Breadcrumb from '../../components/layout/Breadcrumb';
-import { services, categories } from '../../data/services';
-import { useCart } from '../../context/CartContext';   // ✅ useCart from your context
+import { fetchServices, fetchCategories } from '../../data/services';
+import { useCart } from '../../context/CartContext';
 import styles from './ServicesPage.module.css';
 
 const ServicesPage = () => {
-  // ✅ Use the correct property name 'items' instead of 'cartItems'
   const { items, addToCart, updateQuantity, removeFromCart } = useCart();
+  const [services, setServices] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [activeCategory, setActiveCategory] = useState('All');
+  const [activeGender, setActiveGender] = useState('All');
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const [addedIds, setAddedIds] = useState({});
 
-  const filteredServices = activeCategory === 'All'
-    ? services
-    : services.filter(s => s.category === activeCategory);
+  useEffect(() => {
+    let active = true;
+    const loadData = async () => {
+      try {
+        setIsLoading(true);
+        const [loadedCategories, loadedServices] = await Promise.all([
+          fetchCategories(),
+          fetchServices()
+        ]);
+        if (active) {
+          const allCategory = { _id: 'All', name: 'All' };
+          setCategories([allCategory, ...loadedCategories]);
+          setServices(loadedServices);
+          setError(null);
+        }
+      } catch (err) {
+        console.error('Error loading services and categories:', err);
+        if (active) {
+          setError('Failed to load services. Please try again later.');
+        }
+      } finally {
+        if (active) {
+          setIsLoading(false);
+        }
+      }
+    };
+    loadData();
+    return () => {
+      active = false;
+    };
+  }, []);
 
-  // ✅ items is the array of cart items
+  // 1. Filter by category
+  let filteredByCategory = activeCategory === 'All'
+    ? services
+    : services.filter(s => s.categoryId === activeCategory);
+
+  // 2. Filter by gender
+  const filteredServices = filteredByCategory.filter(service => {
+    if (activeGender === 'All') return true;
+    if (activeGender === 'Men') return service.gender === 'men' || service.gender === 'unisex';
+    if (activeGender === 'Women') return service.gender === 'women' || service.gender === 'unisex';
+    return true;
+  });
+
   const getQuantity = (serviceId) => {
     const item = items.find(i => i.productId === serviceId);
     return item ? item.quantity : 0;
   };
 
   const handleAdd = (service) => {
-    // ✅ addToCart expects a product object and optional quantity
     addToCart({
       id: service.id,
       name: service.name,
       price: service.price,
       image: service.image || '/assets/img/service-default.jpg',
     }, 1);
-    // Flash feedback
     setAddedIds(prev => ({ ...prev, [service.id]: true }));
     setTimeout(() => setAddedIds(prev => ({ ...prev, [service.id]: false })), 800);
   };
@@ -152,33 +193,90 @@ const ServicesPage = () => {
     { label: 'Services', path: '/services' }
   ];
 
+  if (isLoading) {
+    return (
+      <PageWrapper title="Salon Services">
+        <Breadcrumb items={breadcrumbItems} />
+        <section className={styles.servicesSection}>
+          <div className="container text-center py-5">
+            <div className="spinner-border" role="status" style={{ width: '3rem', height: '3rem', color: '#FF752B' }}>
+              <span className="visually-hidden">Loading...</span>
+            </div>
+            <p className="mt-3" style={{ color: '#5b6e8c', fontWeight: 500 }}>Loading premium salon services...</p>
+          </div>
+        </section>
+      </PageWrapper>
+    );
+  }
+
+  if (error) {
+    return (
+      <PageWrapper title="Salon Services">
+        <Breadcrumb items={breadcrumbItems} />
+        <section className={styles.servicesSection}>
+          <div className="container text-center py-5">
+            <div className="alert alert-danger" role="alert" style={{ maxWidth: '500px', margin: '0 auto', borderRadius: '12px' }}>
+              <i className="fas fa-exclamation-triangle me-2"></i>
+              {error}
+            </div>
+            <button 
+              onClick={() => window.location.reload()} 
+              className="th-btn mt-4"
+              style={{ backgroundColor: '#FF752B', borderColor: '#FF752B', color: '#fff', borderRadius: '40px', padding: '10px 24px' }}
+            >
+              Retry
+            </button>
+          </div>
+        </section>
+      </PageWrapper>
+    );
+  }
+
   return (
-    <PageWrapper title="Men's Services">
+    <PageWrapper title="Salon Services">
       <Breadcrumb items={breadcrumbItems} />
 
       <section className={styles.servicesSection}>
         <div className="container">
           {/* Filter bar */}
           <div className={styles.filterBar}>
+            {/* Category buttons */}
             <div className={styles.categories}>
               {categories.map(cat => (
                 <button
-                  key={cat}
-                  onClick={() => setActiveCategory(cat)}
-                  className={`${styles.categoryBtn} ${activeCategory === cat ? styles.active : ''}`}
+                  key={cat._id}
+                  onClick={() => setActiveCategory(cat._id)}
+                  className={`${styles.categoryBtn} ${activeCategory === cat._id ? styles.active : ''}`}
                 >
-                  {cat}
+                  {cat.name}
                 </button>
               ))}
             </div>
-            {/* <div className={styles.sortBox}>
-              <select className={styles.sortSelect}>
-                <option>Sort by: Popularity</option>
-                <option>Price: Low to High</option>
-                <option>Price: High to Low</option>
-                <option>Duration: Shortest</option>
-              </select>
-            </div> */}
+
+            {/* Gender toggle (like registration form) */}
+            <div className={styles.genderToggle}>
+              <button
+                type="button"
+                className={`${styles.genderOption} ${activeGender === 'All' ? styles.activeGender : ''}`}
+                onClick={() => setActiveGender('All')}
+              >
+                All
+              </button>
+              <button
+                type="button"
+                className={`${styles.genderOption} ${activeGender === 'Men' ? styles.activeGender : ''}`}
+                onClick={() => setActiveGender('Men')}
+              >
+                Men
+              </button>
+              <button
+                type="button"
+                className={`${styles.genderOption} ${activeGender === 'Women' ? styles.activeGender : ''}`}
+                onClick={() => setActiveGender('Women')}
+              >
+                Women
+              </button>
+            </div>
           </div>
 
           {/* Services grid */}
@@ -195,7 +293,17 @@ const ServicesPage = () => {
                   animate={inView ? { opacity: 1, y: 0 } : {}}
                   transition={{ duration: 0.4, delay: index * 0.05 }}
                 >
-                  <div className={styles.serviceIcon}>{service.icon}</div>
+                  <div className={styles.serviceIcon}>
+                    {service.image ? (
+                      <img 
+                        src={service.image} 
+                        alt={service.name} 
+                        style={{ width: '80px', height: '80px', borderRadius: '50%', objectFit: 'cover' }}
+                      />
+                    ) : (
+                      <span style={{ fontSize: '48px' }}>{service.icon}</span>
+                    )}
+                  </div>
                   <h3 className={styles.serviceName}>{service.name}</h3>
                   <div className={styles.serviceMeta}>
                     <span className={styles.duration}>⏱ {service.duration}</span>
@@ -226,7 +334,7 @@ const ServicesPage = () => {
           </div>
 
           {filteredServices.length === 0 && (
-            <div className={styles.noResults}>No services in this category.</div>
+            <div className={styles.noResults}>No services match the selected filters.</div>
           )}
         </div>
       </section>

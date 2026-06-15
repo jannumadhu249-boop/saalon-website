@@ -1,10 +1,10 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import PageWrapper from '../../components/layout/PageWrapper'
 import Breadcrumb from '../../components/layout/Breadcrumb'
-import { services } from '../../data/services'
+import { services as fallbackServices, fetchServices } from '../../data/services'
 import { team } from '../../data/team'
 
 const appointmentSchema = z.object({
@@ -21,6 +21,25 @@ const appointmentSchema = z.object({
 const AppointmentPage = () => {
   const [appointmentBooked, setAppointmentBooked] = useState(false)
   const [bookingDetails, setBookingDetails] = useState(null)
+  const [servicesList, setServicesList] = useState(fallbackServices)
+
+  useEffect(() => {
+    let active = true;
+    const loadServices = async () => {
+      try {
+        const loadedServices = await fetchServices();
+        if (active && loadedServices.length > 0) {
+          setServicesList(loadedServices);
+        }
+      } catch (err) {
+        console.error('Failed to load services for appointment page:', err);
+      }
+    };
+    loadServices();
+    return () => {
+      active = false;
+    };
+  }, []);
   
   const { register, handleSubmit, reset, formState: { errors } } = useForm({
     resolver: zodResolver(appointmentSchema)
@@ -34,7 +53,7 @@ const AppointmentPage = () => {
   }
 
   const staffOptions = team.map(t => ({ id: t.id, name: t.name, role: t.role }))
-  const serviceOptions = services.map(s => ({ id: s.id, name: s.title, duration: s.duration, price: s.price }))
+  const serviceOptions = servicesList.map(s => ({ id: s.id, name: s.name || s.title, duration: s.duration, price: s.price }))
 
   const breadcrumbItems = [
     { label: 'Home', path: '/' },
